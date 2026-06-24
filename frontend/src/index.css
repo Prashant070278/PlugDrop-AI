@@ -42,6 +42,7 @@
 @layer base {
   * { @apply border-border; }
   html { scroll-behavior: smooth; }
+  section[id] { scroll-margin-top: 96px; }
   body {
     margin: 0;
     @apply bg-background text-foreground;
