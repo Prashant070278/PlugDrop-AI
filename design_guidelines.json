@@ -1,0 +1,105 @@
+{
+  "theme": "Mixed (Light Hero, Dark Multi-Agent)",
+  "archetype": "Modified Swiss & High-Contrast (Archetype 4) + Luxury (Archetype 5) - Futuristic AI Native",
+  "typography": {
+    "fonts": {
+      "headings": "Bricolage Grotesque",
+      "body": "Manrope",
+      "mono": "JetBrains Mono"
+    },
+    "scale": {
+      "h1": "text-5xl sm:text-6xl lg:text-7xl tracking-tighter font-medium",
+      "h2": "text-4xl sm:text-5xl lg:text-6xl tracking-tight font-medium",
+      "h3": "text-2xl sm:text-3xl lg:text-4xl tracking-tight font-medium",
+      "h4": "text-xl sm:text-2xl font-medium",
+      "body": "text-base sm:text-lg leading-relaxed text-muted-foreground",
+      "small": "text-sm tracking-wide uppercase text-muted-foreground"
+    },
+    "rules": [
+      "Never use Inter for headings.",
+      "Headings must have tight tracking (tracking-tight or tracking-tighter).",
+      "Overlines must be uppercase, tiny, wide spacing (tracking-[0.2em])."
+    ]
+  },
+  "colors": {
+    "brand": {
+      "primary": "#8B5CF6",
+      "primary_hover": "#A78BFA",
+      "primary_glow": "rgba(139, 92, 246, 0.4)",
+      "black": "#080808",
+      "white": "#FFFFFF",
+      "light_purple_bg": "#F5F3FF",
+      "dark_purple_bg": "#1E1B4B"
+    },
+    "surfaces": {
+      "light": {
+        "background": "#FFFFFF",
+        "card": "#F9FAFB",
+        "border": "#E5E7EB",
+        "text": "#080808",
+        "muted": "#6B7280"
+      },
+      "dark": {
+        "background": "#080808",
+        "card": "#111111",
+        "border": "#1F2937",
+        "text": "#FFFFFF",
+        "muted": "#9CA3AF"
+      }
+    }
+  },
+  "spacing_and_layout": {
+    "generous_spacing": "Use 2-3x more spacing (p-8, p-12, py-20, py-32).",
+    "bento_grid": "Grid items must be direct children. Use col-span variations to break symmetry.",
+    "optical_alignment": "Left-align dense text, center-align hero text if appropriate.",
+    "glassmorphism": "backdrop-blur-xl bg-white/70 (light) or bg-black/60 (dark) with 1px delicate inner stroke."
+  },
+  "components_strategy": {
+    "buttons": "Shadcn based. Primary buttons use brand purple, pill-shaped (rounded-full) for voice agent triggers, glowing hover state shadow-[0_0_20px_rgba(139,92,246,0.5)].",
+    "cards": "Subtle border (border-border/40), flat background, hover lift (-translate-y-1) and subtle glow for dark cards.",
+    "voice_agent_ui": "Animated concentric circles (ping/pulse effect) around the mic icon, indicating active listening state.",
+    "chat_ui": "WhatsApp/iMessage style. Light left side (features copy), Dark right side (chat UI itself). Bubble styling with border-radius variations for sender/receiver.",
+    "mascot": "Floating element with z-50, follows scroll (using Framer Motion useScroll or sticky), cute robot guide.",
+    "forms": "Use Shadcn Form, Input, Textarea for the Demo Modal."
+  },
+  "media": {
+    "images": {
+      "avatars": {
+        "ava": "https://images.pexels.com/photos/8108560/pexels-photo-8108560.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "sophia": "https://images.unsplash.com/photo-1533461502717-83546f485d24?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNTl8MHwxfHNlYXJjaHwyfHxmdXR1cmlzdGljJTIwcG9ydHJhaXQlMjB3b21hbiUyMG5lb24lMjBsaWdodGluZ3xlbnwwfHx8fDE3ODIzMTA3Mzl8MA&ixlib=rb-4.1.0&q=85",
+        "iris": "https://images.unsplash.com/photo-1708616748538-bdd66d6a9e25?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNTl8MHwxfHNlYXJjaHw0fHxmdXR1cmlzdGljJTIwcG9ydHJhaXQlMjB3b21hbiUyMG5lb24lMjBsaWdodGluZ3xlbnwwfHx8fDE3ODIzMTA3Mzl8MA&ixlib=rb-4.1.0&q=85",
+        "neo": "https://images.pexels.com/photos/8108327/pexels-photo-8108327.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "atlas": "https://images.pexels.com/photos/8726478/pexels-photo-8726478.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      },
+      "backgrounds": {
+        "neural_network": "https://images.pexels.com/photos/17483871/pexels-photo-17483871.png?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "abstract_waves": "https://images.unsplash.com/photo-1758073519996-6d3c63b4922c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMG5ldXJhbCUyMG5ldHdvcmslMjB0ZWNobm9sb2d5JTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3ODIzMTA3Mzd8MA&ixlib=rb-4.1.0&q=85"
+      },
+      "mascot": {
+        "description": "Please use a high-quality SVG robot illustration or emoji representation if no exact image is provided, ensuring it looks like a 'cute blue glossy robot with headphones'."
+      }
+    }
+  },
+  "animations_and_interactions": {
+    "voice_waves": "Use Framer Motion to animate varying height bars (music visualizer style) while the agent 'speaks'.",
+    "multi_agent_diagram": "Animated SVG paths (stroke-dashoffset or motion.path) to show data flowing from Central Orchestrator to Specialist Agents.",
+    "hover_reveal": "For Industry Solution cards, default state shows icon/title, hover state expands or flips to show challenges/ROI.",
+    "live_chat": "Staggered entrance animations for chat bubbles to simulate live typing.",
+    "mascot_float": "Framer Motion y-axis repeating float animation (y: [0, -10, 0])."
+  },
+  "data_testid_guidelines": {
+    "rule": "All interactive and key informational elements MUST include a data-testid attribute.",
+    "format": "kebab-case, role-based. e.g., data-testid='hero-voice-button', data-testid='demo-form-submit'."
+  },
+  "instructions_to_main_agent": [
+    "Install Bricolage Grotesque and Manrope from Google Fonts.",
+    "Install framer-motion, lucide-react.",
+    "Build a one-page architecture with smooth scrolling to sections.",
+    "The Hero section must have a light purple gradient background, black text, with Ava's avatar and a prominent 'Speak' button.",
+    "The Multi-Agent section must be deep black with glowing purple connection lines.",
+    "The Live Chat section must be a split layout: Light content on the left, dark chat interface on the right.",
+    "Create the Mascot as a fixed floating element in the bottom right or left corner.",
+    "For the BYOP Framework, create a visual funnel/convergence graphic using pure CSS/SVG.",
+    "Ensure all accessibility (ARIA, contrast) and responsive rules are met."
+  ]
+}
