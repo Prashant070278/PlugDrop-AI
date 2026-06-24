@@ -9,6 +9,7 @@ import BYOPFramework from "./components/BYOPFramework";
 import Metrics from "./components/Metrics";
 import AgentGallery from "./components/AgentGallery";
 import LiveConversation from "./components/LiveConversation";
+import CustomerLogos from "./components/CustomerLogos";
 import Footer from "./components/Footer";
 import FloatingMascot from "./components/FloatingMascot";
 import DemoModal from "./components/DemoModal";
@@ -31,6 +32,7 @@ export default function App() {
       <BYOPFramework />
       <Metrics />
       <AgentGallery />
+      <CustomerLogos />
       <LiveConversation openSignal={talkSignal} />
       <Footer onBookDemo={openDemo} />
       <FloatingMascot onClick={talkToAgent} />

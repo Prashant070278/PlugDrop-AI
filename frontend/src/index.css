@@ -127,3 +127,7 @@
 
 @keyframes typing-dot { 0%, 60%, 100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-4px); opacity: 1; } }
 .typing-dot { animation: typing-dot 1.2s infinite; }
+
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee { animation: marquee 40s linear infinite; width: max-content; }
+.marquee:hover { animation-play-state: paused; }
