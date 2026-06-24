@@ -133,8 +133,21 @@ export default function Hero({ onBookDemo, onTalkToAgent }) {
             <div className="absolute -inset-2 rounded-[44px] border border-pdpurple/20" />
 
             <div className="relative h-full w-full rounded-[36px] overflow-hidden noise" data-testid="hero-avatar">
-              <img src={ASSETS.heroAvatar} alt="PlugDrop AI agent" className="h-full w-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-tr from-pdpurple/20 via-transparent to-transparent" />
+              <img src={ASSETS.heroAvatar} alt="PlugDrop AI agent"
+                className="h-full w-full object-cover"
+                style={{ filter: "grayscale(0.4) contrast(1.05) brightness(0.95)" }} />
+              {/* Purple duotone */}
+              <div className="absolute inset-0 mix-blend-color"
+                style={{ background: "linear-gradient(140deg, #8B5CF6 0%, #6D28D9 60%, #1E1B4B 100%)" }} />
+              <div className="absolute inset-0 mix-blend-screen opacity-50"
+                style={{ background: "radial-gradient(circle at 35% 25%, #DDD6FE 0%, transparent 55%)" }} />
+              {/* HUD scan lines */}
+              <div className="absolute inset-0 opacity-25 mix-blend-overlay pointer-events-none"
+                style={{ backgroundImage: "repeating-linear-gradient(180deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 4px)" }} />
+              {/* HUD corner frames */}
+              <div className="absolute top-4 left-4 size-6 border-l-2 border-t-2 border-pdpurple-soft/80" />
+              <div className="absolute top-4 right-4 size-6 border-r-2 border-t-2 border-pdpurple-soft/80" />
+              <div className="absolute inset-0 bg-gradient-to-t from-pdblack/60 via-transparent to-transparent" />
 
               {/* Floating badges */}
               <div className="absolute top-5 left-5 glass-light rounded-2xl px-3 py-2 flex items-center gap-2">

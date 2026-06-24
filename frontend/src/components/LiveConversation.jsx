@@ -99,7 +99,8 @@ export default function LiveConversation({ openSignal }) {
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <div className="flex items-center gap-3">
                 <div className="relative size-10 rounded-full overflow-hidden border-2 border-pdpurple/50">
-                  <img src={ASSETS.heroAvatar} alt="" className="w-full h-full object-cover" />
+                  <img src={ASSETS.agentAva} alt="" className="w-full h-full object-cover" style={{ filter: "grayscale(0.4) contrast(1.05)" }} />
+                  <div className="absolute inset-0 mix-blend-color" style={{ background: "linear-gradient(135deg, #8B5CF6, #6D28D9)" }} />
                 </div>
                 <div>
                   <div className="text-white font-medium text-sm">AI Agent · Ava</div>
@@ -121,7 +122,10 @@ export default function LiveConversation({ openSignal }) {
                   initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
                   className={`flex items-end gap-2 ${m.from === "user" ? "justify-end" : "justify-start"}`}>
                   {m.from === "ai" && (
-                    <img src={ASSETS.heroAvatar} alt="" className="size-7 rounded-full object-cover border border-pdpurple/30" />
+                    <div className="size-7 rounded-full overflow-hidden border border-pdpurple/30 shrink-0 relative">
+                      <img src={ASSETS.agentAva} alt="" className="w-full h-full object-cover" style={{ filter: "grayscale(0.4)" }} />
+                      <div className="absolute inset-0 mix-blend-color" style={{ background: "linear-gradient(135deg, #8B5CF6, #6D28D9)" }} />
+                    </div>
                   )}
                   <div className={`max-w-[78%] rounded-2xl px-4 py-2.5 ${
                     m.from === "user"
@@ -135,7 +139,10 @@ export default function LiveConversation({ openSignal }) {
               ))}
               {typing && (
                 <div className="flex items-end gap-2">
-                  <img src={ASSETS.heroAvatar} alt="" className="size-7 rounded-full object-cover border border-pdpurple/30" />
+                  <div className="size-7 rounded-full overflow-hidden border border-pdpurple/30 shrink-0 relative">
+                    <img src={ASSETS.agentAva} alt="" className="w-full h-full object-cover" style={{ filter: "grayscale(0.4)" }} />
+                    <div className="absolute inset-0 mix-blend-color" style={{ background: "linear-gradient(135deg, #8B5CF6, #6D28D9)" }} />
+                  </div>
                   <div className="bg-white rounded-2xl rounded-bl-md px-4 py-3 flex gap-1">
                     {[0,1,2].map((d) => (
                       <span key={d} className="size-1.5 rounded-full bg-pdblack/50 typing-dot" style={{ animationDelay: `${d * 0.15}s` }} />
