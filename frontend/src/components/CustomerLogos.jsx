@@ -11,7 +11,7 @@ export default function CustomerLogos() {
         <div className="text-center mb-10">
           <span className="text-xs uppercase tracking-[0.25em] text-pdpurple font-medium">Trusted by enterprises</span>
           <h2 className="mt-3 font-display text-3xl sm:text-4xl lg:text-5xl tracking-tighter font-medium leading-[1.05] text-pdblack">
-            22+ leading brands run on <span className="text-gradient-purple">PlugDrop.</span>
+            22+ leading brands run <span className="text-gradient-purple">PlugDrop AI Agents.</span>
           </h2>
           <p className="mt-3 text-sm lg:text-base text-pdblack/60 max-w-2xl mx-auto">
             From Teleperformance to UltraTech, Standard Chartered to PVR Cinemas — global enterprises trust
