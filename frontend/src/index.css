@@ -1,115 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..700&family=Manrope:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
+:root {
+  --pd-purple: #8B5CF6;
+  --pd-purple-soft: #A78BFA;
+  --pd-purple-deep: #6D28D9;
+  --pd-purple-bg: #F5F3FF;
+  --pd-purple-glow: rgba(139, 92, 246, 0.4);
+  --pd-black: #080808;
+  --pd-white: #FFFFFF;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.1%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.1%;
+    --primary: 258 90% 66%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 250 100% 97%;
+    --secondary-foreground: 258 60% 30%;
+    --muted: 250 30% 96%;
+    --muted-foreground: 240 5% 45%;
+    --accent: 250 100% 97%;
+    --accent-foreground: 258 60% 30%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 258 90% 66%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  html { scroll-behavior: smooth; }
+  body {
     margin: 0;
-    font-family:
-        -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-        sans-serif;
+    @apply bg-background text-foreground;
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background-color: rgba(139, 92, 246, 0.25);
+    color: #080808;
+  }
 }
 
-code {
-    font-family:
-        source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+@layer utilities {
+  .font-display { font-family: 'Bricolage Grotesque', serif; font-optical-sizing: auto; letter-spacing: -0.02em; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+  .text-gradient-purple {
+    background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 50%, #C4B5FD 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .bg-mesh-light {
+    background-color: #F5F3FF;
+    background-image:
+      radial-gradient(at 12% 18%, rgba(167, 139, 250, 0.35) 0px, transparent 50%),
+      radial-gradient(at 88% 0%, rgba(139, 92, 246, 0.20) 0px, transparent 50%),
+      radial-gradient(at 0% 92%, rgba(196, 181, 253, 0.30) 0px, transparent 50%);
+  }
+
+  .bg-mesh-dark {
+    background-color: #060606;
+    background-image:
+      radial-gradient(at 80% 10%, rgba(139, 92, 246, 0.18) 0px, transparent 55%),
+      radial-gradient(at 10% 90%, rgba(109, 40, 217, 0.15) 0px, transparent 55%);
+  }
+
+  .glow-purple { box-shadow: 0 0 40px rgba(139, 92, 246, 0.45); }
+  .glow-purple-sm { box-shadow: 0 0 20px rgba(139, 92, 246, 0.35); }
+  .glow-purple-lg { box-shadow: 0 0 80px rgba(139, 92, 246, 0.55); }
+
+  .glass-light { background: rgba(255,255,255,0.65); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.6); }
+  .glass-dark  { background: rgba(20,18,32,0.55); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); }
+
+  .grid-pattern {
+    background-image:
+      linear-gradient(rgba(139,92,246,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(139,92,246,0.07) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .noise::after {
+    content: "";
+    position: absolute; inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
 }
 
-@layer base {
-    :root {
-        --background: 0 0% 100%;
-        --foreground: 0 0% 3.9%;
-        --card: 0 0% 100%;
-        --card-foreground: 0 0% 3.9%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 0 0% 3.9%;
-        --primary: 0 0% 9%;
-        --primary-foreground: 0 0% 98%;
-        --secondary: 0 0% 96.1%;
-        --secondary-foreground: 0 0% 9%;
-        --muted: 0 0% 96.1%;
-        --muted-foreground: 0 0% 45.1%;
-        --accent: 0 0% 96.1%;
-        --accent-foreground: 0 0% 9%;
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 89.8%;
-        --input: 0 0% 89.8%;
-        --ring: 0 0% 3.9%;
-        --chart-1: 12 76% 61%;
-        --chart-2: 173 58% 39%;
-        --chart-3: 197 37% 24%;
-        --chart-4: 43 74% 66%;
-        --chart-5: 27 87% 67%;
-        --radius: 0.5rem;
-    }
-    .dark {
-        --background: 0 0% 3.9%;
-        --foreground: 0 0% 98%;
-        --card: 0 0% 3.9%;
-        --card-foreground: 0 0% 98%;
-        --popover: 0 0% 3.9%;
-        --popover-foreground: 0 0% 98%;
-        --primary: 0 0% 98%;
-        --primary-foreground: 0 0% 9%;
-        --secondary: 0 0% 14.9%;
-        --secondary-foreground: 0 0% 98%;
-        --muted: 0 0% 14.9%;
-        --muted-foreground: 0 0% 63.9%;
-        --accent: 0 0% 14.9%;
-        --accent-foreground: 0 0% 98%;
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 14.9%;
-        --input: 0 0% 14.9%;
-        --ring: 0 0% 83.1%;
-        --chart-1: 220 70% 50%;
-        --chart-2: 160 60% 45%;
-        --chart-3: 30 80% 55%;
-        --chart-4: 280 65% 60%;
-        --chart-5: 340 75% 55%;
-    }
+/* Voice wave bars */
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
 }
+.wave-bar { animation: wave 1.1s ease-in-out infinite; transform-origin: center; }
 
-@layer base {
-    * {
-        @apply border-border;
-    }
-    body {
-        @apply bg-background text-foreground;
-    }
-}
+@keyframes ping-slow { 0% { transform: scale(1); opacity: 0.5; } 80%, 100% { transform: scale(2.2); opacity: 0; } }
+.ping-slow { animation: ping-slow 2.2s cubic-bezier(0,0,0.2,1) infinite; }
 
-@layer base {
-    [data-debug-wrapper="true"] {
-        display: contents !important;
-    }
+@keyframes float-soft { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.float-soft { animation: float-soft 5s ease-in-out infinite; }
 
-    [data-debug-wrapper="true"] > * {
-        margin-left: inherit;
-        margin-right: inherit;
-        margin-top: inherit;
-        margin-bottom: inherit;
-        padding-left: inherit;
-        padding-right: inherit;
-        padding-top: inherit;
-        padding-bottom: inherit;
-        column-gap: inherit;
-        row-gap: inherit;
-        gap: inherit;
-        border-left-width: inherit;
-        border-right-width: inherit;
-        border-top-width: inherit;
-        border-bottom-width: inherit;
-        border-left-style: inherit;
-        border-right-style: inherit;
-        border-top-style: inherit;
-        border-bottom-style: inherit;
-        border-left-color: inherit;
-        border-right-color: inherit;
-        border-top-color: inherit;
-        border-bottom-color: inherit;
-    }
-}
+@keyframes orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.orbit { animation: orbit 30s linear infinite; }
+
+@keyframes dash { to { stroke-dashoffset: -200; } }
+.dash-anim { stroke-dasharray: 6 8; animation: dash 6s linear infinite; }
+
+@keyframes typing-dot { 0%, 60%, 100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-4px); opacity: 1; } }
+.typing-dot { animation: typing-dot 1.2s infinite; }
