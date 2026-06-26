@@ -10,6 +10,8 @@ from typing import List, Optional
 import uuid
 from datetime import datetime, timezone
 
+from mailer import send_email, format_lead_email
+
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -24,10 +26,10 @@ api_router = APIRouter(prefix="/api")
 
 # ---------- Demo Booking ----------
 class DemoRequestCreate(BaseModel):
-    name: str
+    name: str = Field(min_length=1)
     email: EmailStr
-    company: str
-    phone: Optional[str] = ""
+    phone: str = Field(min_length=4)
+    company: Optional[str] = ""
     interest: Optional[str] = "general"
     message: Optional[str] = ""
 
@@ -54,8 +56,8 @@ async def create_demo_request(payload: DemoRequestCreate):
     obj = DemoRequest(
         name=payload.name,
         email=payload.email,
-        company=payload.company,
-        phone=payload.phone or "",
+        company=payload.company or "",
+        phone=payload.phone,
         interest=payload.interest or "general",
         message=payload.message or "",
     )
@@ -63,6 +65,14 @@ async def create_demo_request(payload: DemoRequestCreate):
     doc["created_at"] = doc["created_at"].isoformat()
     await db.demo_requests.insert_one(doc)
     logger.info(f"New demo request from {payload.email} ({payload.company})")
+
+    # Fire-and-forget email — never block the user if SMTP fails.
+    try:
+        subject, html = format_lead_email(doc)
+        send_email(subject, html)
+    except Exception as e:
+        logger.error("Lead email failed: %s", e)
+
     return obj
 
 

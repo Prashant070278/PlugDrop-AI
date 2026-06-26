@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Mic, ArrowRight, Sparkles, Volume2 } from "lucide-react";
 import { ASSETS } from "../lib/constants";
+import NeuralNetwork from "./NeuralNetwork";
 
 function WaveBars({ active = false, count = 28 }) {
   return (
@@ -40,7 +41,13 @@ export default function Hero({ onBookDemo, onTalkToAgent }) {
 
   return (
     <section id="top" data-testid="hero-section" className="relative pt-32 pb-24 lg:pt-40 lg:pb-32 bg-mesh-light overflow-hidden">
-      <div className="absolute inset-0 grid-pattern opacity-60 pointer-events-none" />
+      <div className="absolute inset-0 grid-pattern opacity-50 pointer-events-none" />
+      <NeuralNetwork density={0.00011} opacity={0.55} />
+
+      {/* Floating glassy holograms */}
+      <div className="hidden lg:block absolute left-8 top-44 size-24 rounded-3xl glass-light border border-pdpurple/20 float-soft pointer-events-none" />
+      <div className="hidden lg:block absolute right-[18%] bottom-24 size-20 rounded-2xl glass-light border border-pdpurple/20 float-soft pointer-events-none" style={{ animationDelay: "1.5s" }} />
+      <div className="hidden lg:block absolute left-[12%] bottom-32 size-14 rounded-full glass-light border border-pdpurple/20 float-soft pointer-events-none" style={{ animationDelay: "2.5s" }} />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 items-center">
         {/* LEFT — copy */}
@@ -66,11 +73,12 @@ export default function Hero({ onBookDemo, onTalkToAgent }) {
 
           <motion.p
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }}
-            className="text-lg leading-relaxed text-pdblack/70 max-w-xl"
+            className="text-lg leading-relaxed text-pdblack/75 max-w-xl"
             data-testid="hero-subhead"
           >
-            Enterprise AI solutions — Voice Agents, Multi-Agent Systems, Agentic Frameworks and Digital Transformation
-            services that plug into your existing CRM, ERP and telephony stack.
+            <span className="font-semibold text-pdblack">Reduce operating costs by 45%</span>,
+            handle <span className="font-semibold text-pdblack">100,000+ customer conversations</span> automatically
+            & deploy <span className="font-semibold text-pdblack">full-fledged AI teams</span> that complete work across departments.
           </motion.p>
 
           <motion.div

@@ -15,8 +15,8 @@ export default function DemoModal({ open, onClose }) {
 
   const submit = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.company) {
-      toast.error("Please fill in name, email and company");
+    if (!form.name || !form.email || !form.phone) {
+      toast.error("Please fill in name, email and phone — all required.");
       return;
     }
     setLoading(true);
@@ -67,15 +67,15 @@ export default function DemoModal({ open, onClose }) {
 
                 <form onSubmit={submit} className="mt-6 space-y-3" data-testid="demo-form">
                   <div className="grid sm:grid-cols-2 gap-3">
-                    <input data-testid="demo-input-name" required placeholder="Full name" value={form.name} onChange={update("name")}
+                    <input data-testid="demo-input-name" required placeholder="Full name *" value={form.name} onChange={update("name")}
                       className="w-full rounded-xl border border-pdblack/15 px-4 py-3 text-sm outline-none focus:border-pdpurple focus:ring-2 focus:ring-pdpurple/20 transition" />
-                    <input data-testid="demo-input-email" required type="email" placeholder="Work email" value={form.email} onChange={update("email")}
+                    <input data-testid="demo-input-email" required type="email" placeholder="Work email *" value={form.email} onChange={update("email")}
                       className="w-full rounded-xl border border-pdblack/15 px-4 py-3 text-sm outline-none focus:border-pdpurple focus:ring-2 focus:ring-pdpurple/20 transition" />
                   </div>
                   <div className="grid sm:grid-cols-2 gap-3">
-                    <input data-testid="demo-input-company" required placeholder="Company" value={form.company} onChange={update("company")}
+                    <input data-testid="demo-input-company" placeholder="Company (optional)" value={form.company} onChange={update("company")}
                       className="w-full rounded-xl border border-pdblack/15 px-4 py-3 text-sm outline-none focus:border-pdpurple focus:ring-2 focus:ring-pdpurple/20 transition" />
-                    <input data-testid="demo-input-phone" placeholder="Phone (optional)" value={form.phone} onChange={update("phone")}
+                    <input data-testid="demo-input-phone" required type="tel" placeholder="Phone (with country code) *" value={form.phone} onChange={update("phone")}
                       className="w-full rounded-xl border border-pdblack/15 px-4 py-3 text-sm outline-none focus:border-pdpurple focus:ring-2 focus:ring-pdpurple/20 transition" />
                   </div>
                   <select data-testid="demo-input-interest" value={form.interest} onChange={update("interest")}

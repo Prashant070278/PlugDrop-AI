@@ -15,16 +15,15 @@ export default function QuickContact() {
 
   const submit = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.phone) {
-      toast.error("We need at least your name and phone to call you back.");
+    if (!form.name || !form.email || !form.phone) {
+      toast.error("Name, email and phone are all required so we can reach you back.");
       return;
     }
     setLoading(true);
     try {
-      // Reuse the demo-request endpoint; flagged as a quick callback request.
       await axios.post(`${API}/demo-request`, {
         name: form.name,
-        email: form.email || "callback@plugdrop.ai",
+        email: form.email,
         company: "(quick callback)",
         phone: form.phone,
         interest: "callback",
@@ -96,13 +95,13 @@ export default function QuickContact() {
 
                   <form onSubmit={submit} className="mt-5 space-y-3" data-testid="quick-contact-form">
                     <input
-                      data-testid="quick-input-name" required placeholder="Your name" value={form.name} onChange={update("name")}
+                      data-testid="quick-input-name" required placeholder="Your name *" value={form.name} onChange={update("name")}
                       className="w-full rounded-xl border border-pdblack/15 px-4 py-3 text-sm outline-none focus:border-pdpurple focus:ring-2 focus:ring-pdpurple/20 transition" />
                     <input
-                      data-testid="quick-input-phone" required type="tel" placeholder="Phone (with country code)" value={form.phone} onChange={update("phone")}
+                      data-testid="quick-input-email" required type="email" placeholder="Email *" value={form.email} onChange={update("email")}
                       className="w-full rounded-xl border border-pdblack/15 px-4 py-3 text-sm outline-none focus:border-pdpurple focus:ring-2 focus:ring-pdpurple/20 transition" />
                     <input
-                      data-testid="quick-input-email" type="email" placeholder="Email (optional)" value={form.email} onChange={update("email")}
+                      data-testid="quick-input-phone" required type="tel" placeholder="Phone (with country code) *" value={form.phone} onChange={update("phone")}
                       className="w-full rounded-xl border border-pdblack/15 px-4 py-3 text-sm outline-none focus:border-pdpurple focus:ring-2 focus:ring-pdpurple/20 transition" />
 
                     <button data-testid="quick-submit" type="submit" disabled={loading}
