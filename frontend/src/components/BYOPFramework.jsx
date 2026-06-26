@@ -3,7 +3,7 @@ import { BYOP, INTEGRATIONS } from "../lib/constants";
 
 export default function BYOPFramework() {
   // Position BYOP nodes around the central core in a hexagon
-  const radius = 220; // px
+  const radius = 250; // px
   return (
     <section id="byop" data-testid="byop-section" className="relative py-24 lg:py-32 bg-pdpurple-bg overflow-hidden">
       <div className="absolute inset-0 grid-pattern opacity-40" />
@@ -17,13 +17,13 @@ export default function BYOPFramework() {
             Plug into your stack.<br/><span className="italic font-light">Don't rebuild it.</span>
           </h2>
           <p className="mt-5 text-base lg:text-lg leading-relaxed text-pdblack/70 max-w-xl mx-auto">
-            Bring Your Own Platform — CRM, ERP, Workflow, API, Telephony or Interface.
-            PlugDrop AI Core orchestrates around what you already run.
+            Bring Your Own Platform — CRM, ERP, Workflow, API, Telephony, Interface,
+            Knowledge Base or IoT data. PlugDrop AI Core orchestrates around what you already run.
           </p>
         </div>
 
         {/* Orbital BYOP diagram */}
-        <div className="relative mt-16 mx-auto" style={{ maxWidth: 760, height: 560 }}>
+        <div className="relative mt-16 mx-auto" style={{ maxWidth: 880, height: 680 }}>
           {/* Orbital rings */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-pdpurple/20"
                style={{ width: radius * 2 + 60, height: radius * 2 + 60 }} />

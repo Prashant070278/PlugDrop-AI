@@ -1,5 +1,5 @@
 export const ASSETS = {
-  mascot: "https://customer-assets.emergentagent.com/job_0cd876a0-a865-4d97-862d-50a9b26ad778/artifacts/89py54a2_Plug%20Avatar.png",
+  mascot: "/mascot.png",
   // Hero — Indian AI digital-workforce avatar (Gemini Nano Banana)
   heroAvatar: "/agents/hero.png",
   // Real customer logos screenshot
@@ -201,12 +201,14 @@ export const INTEGRATIONS = [
 ];
 
 export const BYOP = [
-  { label: "CRM",       full: "Bring Your Own CRM",       desc: "Plug into existing customer data.",      slug: "salesforce" },
-  { label: "ERP",       full: "Bring Your Own ERP",       desc: "Access business systems securely.",      slug: "sap" },
-  { label: "Workflow",  full: "Bring Your Own Workflow",  desc: "Wrap your processes with AI.",           slug: "zapier" },
-  { label: "API",       full: "Bring Your Own API",       desc: "Connect anything via APIs.",             slug: "postman" },
-  { label: "Telephony", full: "Bring Your Own Telephony", desc: "Use your call infrastructure.",          slug: "twilio" },
-  { label: "Interface", full: "Bring Your Own Interface", desc: "Keep your existing UI.",                 slug: "figma" },
+  { label: "CRM",            full: "Bring Your Own CRM",            desc: "Plug into existing customer data.",          slug: "salesforce" },
+  { label: "ERP",            full: "Bring Your Own ERP",            desc: "Access business systems securely.",          slug: "sap" },
+  { label: "Workflow",       full: "Bring Your Own Workflow",       desc: "Wrap your processes with AI.",               slug: "zapier" },
+  { label: "API",            full: "Bring Your Own API",            desc: "Connect anything via APIs.",                 slug: "postman" },
+  { label: "Telephony",      full: "Bring Your Own Telephony",      desc: "Use your call infrastructure.",              slug: "twilio" },
+  { label: "Interface",      full: "Bring Your Own Interface",      desc: "Keep your existing UI.",                     slug: "figma" },
+  { label: "Knowledge Base", full: "Bring Your Knowledge Base",     desc: "Ingest docs, FAQs and SOPs as agent memory.", slug: "notion" },
+  { label: "IoT Data",       full: "Bring Your IoT Data Stream",    desc: "Stream sensor & device telemetry into AI.",  slug: "raspberrypi" },
 ];
 
 export const METRICS = [
@@ -226,10 +228,4 @@ export const CUSTOMERS = [
   "FLoT", "Naukri.com", "STIC Travel Group", "Avon", "Annik", "Wave Infratech",
 ];
 
-export const CUSTOMER_LOGO_STRIPS = [
-  "/customers/strip_1.png",
-  "/customers/strip_2.png",
-  "/customers/strip_3.png",
-  "/customers/strip_4.png",
-  "/customers/strip_5.png",
-];
+export const CUSTOMER_LOGO_STRIPS = ["/customers/row.png"];

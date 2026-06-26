@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { CUSTOMER_LOGO_STRIPS } from "../lib/constants";
 
 export default function CustomerLogos() {
+  const src = CUSTOMER_LOGO_STRIPS[0];
   return (
     <section data-testid="customer-logos" className="relative py-20 lg:py-24 bg-white border-y border-pdpurple/10 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-10 mb-12">
@@ -17,36 +18,29 @@ export default function CustomerLogos() {
         </div>
       </div>
 
-      {/* Logo strips — each row of the original poster scrolls horizontally */}
-      <div className="relative space-y-5">
+      <div className="relative">
         <div className="absolute inset-y-0 left-0 w-24 sm:w-40 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-24 sm:w-40 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
-        {CUSTOMER_LOGO_STRIPS.map((src, i) => {
-          const reverse = i % 2 === 1;
-          const dur = 60 + i * 8;
-          return (
-            <motion.div
-              key={src}
-              data-testid={`logo-strip-${i + 1}`}
-              className="flex items-center gap-12 whitespace-nowrap"
-              animate={{ x: reverse ? ["-50%", "0%"] : ["0%", "-50%"] }}
-              transition={{ ease: "linear", repeat: Infinity, duration: dur }}
-              style={{ width: "max-content" }}
-            >
-              {[0, 1, 2].map((k) => (
-                <img
-                  key={`${src}-${k}`}
-                  src={src}
-                  alt="PlugDrop customers"
-                  className="h-16 sm:h-20 lg:h-24 w-auto object-contain shrink-0 select-none"
-                  draggable="false"
-                  loading="lazy"
-                />
-              ))}
-            </motion.div>
-          );
-        })}
+        {/* Single row, left-to-right scroll */}
+        <motion.div
+          data-testid="logo-strip-1"
+          className="flex items-center gap-12 whitespace-nowrap"
+          animate={{ x: ["-50%", "0%"] }}
+          transition={{ ease: "linear", repeat: Infinity, duration: 80 }}
+          style={{ width: "max-content" }}
+        >
+          {[0, 1, 2].map((k) => (
+            <img
+              key={k}
+              src={src}
+              alt="PlugDrop customers — Teleperformance, Konica Minolta, UltraTech Cement, Godrej, Bisleri, Standard Chartered, Dubai World Trade Centre, PVR Cinemas, Adidas, India Today, Hindustan Times, Pepperfry, King's College Hospital, Welspun, BLS International, Singapore Post, FLoT, Naukri, STIC Travel Group, Avon, Annik, Wave Infratech"
+              className="h-20 sm:h-24 lg:h-28 w-auto object-contain shrink-0 select-none"
+              draggable="false"
+              loading="lazy"
+            />
+          ))}
+        </motion.div>
       </div>
     </section>
   );
