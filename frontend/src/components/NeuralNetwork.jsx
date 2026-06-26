@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
  * dynamic connections, and a subtle 3D-feel via radial purple gradients.
  * Pure canvas — high performance, no extra deps.
  */
-export default function NeuralNetwork({ density = 0.00009, opacity = 0.45 }) {
+export default function NeuralNetwork({ density = 0.00009, opacity = 0.45, count: countProp }) {
   const ref = useRef(null);
   const animRef = useRef(0);
 
@@ -23,7 +23,7 @@ export default function NeuralNetwork({ density = 0.00009, opacity = 0.45 }) {
       w = r.width; h = r.height;
       canvas.width = w * dpr; canvas.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.max(28, Math.min(70, Math.round(w * h * density)));
+      const count = countProp ?? Math.max(28, Math.min(70, Math.round(w * h * density)));
       nodes = Array.from({ length: count }).map(() => ({
         x: Math.random() * w,
         y: Math.random() * h,
@@ -99,11 +99,11 @@ export default function NeuralNetwork({ density = 0.00009, opacity = 0.45 }) {
           const a = nodes[i], b = nodes[j];
           const dx = a.x - b.x, dy = a.y - b.y;
           const d2 = dx * dx + dy * dy;
-          const MAX = 140 * 140;
+          const MAX = 1400 * 1400;
           if (d2 < MAX) {
-            const al = (1 - d2 / MAX) * 0.35;
-            ctx.strokeStyle = `hsla(265, 80%, 65%, ${al * opacity})`;
-            ctx.lineWidth = 0.8;
+            const al = (1 - d2 / MAX) * 0.55;
+            ctx.strokeStyle = `hsla(265, 80%, 60%, ${al * opacity})`;
+            ctx.lineWidth = 1.2;
             ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
 
             // Travelling data packet
@@ -111,7 +111,7 @@ export default function NeuralNetwork({ density = 0.00009, opacity = 0.45 }) {
             const px = a.x + (b.x - a.x) * phase;
             const py = a.y + (b.y - a.y) * phase;
             ctx.fillStyle = `hsla(280, 95%, 75%, ${al * 1.5})`;
-            ctx.beginPath(); ctx.arc(px, py, 1.4, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(px, py, 2.2, 0, Math.PI * 2); ctx.fill();
           }
         }
       }

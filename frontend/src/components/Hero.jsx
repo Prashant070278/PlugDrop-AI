@@ -42,7 +42,7 @@ export default function Hero({ onBookDemo, onTalkToAgent }) {
   return (
     <section id="top" data-testid="hero-section" className="relative pt-32 pb-24 lg:pt-40 lg:pb-32 bg-mesh-light overflow-hidden">
       <div className="absolute inset-0 grid-pattern opacity-50 pointer-events-none" />
-      <NeuralNetwork density={0.00011} opacity={0.55} />
+      <NeuralNetwork count={4} opacity={0.7} />
 
       {/* Floating glassy holograms */}
       <div className="hidden lg:block absolute left-8 top-44 size-24 rounded-3xl glass-light border border-pdpurple/20 float-soft pointer-events-none" />
