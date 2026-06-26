@@ -16,6 +16,7 @@ import FAQ from "./components/FAQ";
 import Footer from "./components/Footer";
 import FloatingMascot from "./components/FloatingMascot";
 import DemoModal from "./components/DemoModal";
+import QuickContact from "./components/QuickContact";
 import "./App.css";
 
 export default function App() {
@@ -30,20 +31,23 @@ export default function App() {
       <Navigation onBookDemo={openDemo} />
       <main>
         <Hero onBookDemo={openDemo} onTalkToAgent={talkToAgent} />
-        <VoiceExperience onTalkToAgent={talkToAgent} />
+        {/* Agent Gallery now sits where Voice Experience was, and Why follows it */}
+        <AgentGallery />
+        <WhyPlugDrop onBookDemo={openDemo} />
         <MultiAgent onBookDemo={openDemo} />
         <Industries />
         <BYOPFramework />
         <Metrics />
-        <AgentGallery />
+        {/* Voice Experience moved down to where Agent Gallery was */}
+        <VoiceExperience onTalkToAgent={talkToAgent} />
         <CustomerLogos />
-        <WhyPlugDrop onBookDemo={openDemo} />
         <Testimonials />
         <LiveConversation openSignal={talkSignal} />
         <FAQ />
       </main>
       <Footer onBookDemo={openDemo} />
       <FloatingMascot onClick={talkToAgent} />
+      <QuickContact />
       <DemoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
     </div>
   );

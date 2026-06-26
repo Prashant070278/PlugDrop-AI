@@ -28,11 +28,8 @@ export default function FAQ() {
         <div className="text-center mb-14">
           <span className="text-xs uppercase tracking-[0.25em] text-pdpurple font-medium">FAQs</span>
           <h2 id="faq-heading" className="mt-3 font-display text-4xl sm:text-5xl lg:text-6xl tracking-tighter font-medium leading-[1.02] text-pdblack">
-            Everything you need to know<br/>about <span className="text-gradient-purple">Enterprise AI.</span>
+            Everything you need to know<br/>about <span className="text-gradient-purple">PlugDrop AI Agents.</span>
           </h2>
-          <p className="mt-4 text-base lg:text-lg text-pdblack/65 max-w-2xl mx-auto">
-            Concise answers about AI Agents, Voice AI, Multi-Agent systems, integrations and enterprise deployment.
-          </p>
         </div>
 
         <div className="space-y-3" itemScope itemType="https://schema.org/FAQPage">

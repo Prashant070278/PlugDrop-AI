@@ -35,7 +35,7 @@ export default function Footer({ onBookDemo }) {
               <li className="flex gap-2"><MapPin className="size-4 mt-0.5 text-pdpurple-soft" />
                 <div>
                   <div className="font-medium text-white">India</div>
-                  <div className="text-white/60 text-xs leading-relaxed">C12, 4th Floor Innov8, Plot 146, Sec 44, Gurgaon · FF24 Omaxe Square, Jasola, New Delhi</div>
+                  <div className="text-white/60 text-xs leading-relaxed">C12, 4th Floor Innov8, Plot 146, Sec 44, Gurgaon 122003 India · FF24 Omaxe Square, Jasola, New Delhi</div>
                 </div>
               </li>
               <li className="flex gap-2"><MapPin className="size-4 mt-0.5 text-pdpurple-soft" />

@@ -201,14 +201,15 @@ export const INTEGRATIONS = [
 ];
 
 export const BYOP = [
-  { label: "CRM",            full: "Bring Your Own CRM",            desc: "Plug into existing customer data.",          slug: "salesforce" },
-  { label: "ERP",            full: "Bring Your Own ERP",            desc: "Access business systems securely.",          slug: "sap" },
-  { label: "Workflow",       full: "Bring Your Own Workflow",       desc: "Wrap your processes with AI.",               slug: "zapier" },
-  { label: "API",            full: "Bring Your Own API",            desc: "Connect anything via APIs.",                 slug: "postman" },
-  { label: "Telephony",      full: "Bring Your Own Telephony",      desc: "Use your call infrastructure.",              slug: "twilio" },
-  { label: "Interface",      full: "Bring Your Own Interface",      desc: "Keep your existing UI.",                     slug: "figma" },
-  { label: "Knowledge Base", full: "Bring Your Knowledge Base",     desc: "Ingest docs, FAQs and SOPs as agent memory.", slug: "notion" },
-  { label: "IoT Data",       full: "Bring Your IoT Data Stream",    desc: "Stream sensor & device telemetry into AI.",  slug: "raspberrypi" },
+  { label: "CRM",            full: "Bring Your Own CRM",                  desc: "Plug into existing customer data.",            slug: "salesforce" },
+  { label: "ERP",            full: "Bring Your Own ERP",                  desc: "Access business systems securely.",            slug: "sap" },
+  { label: "Workflow",       full: "Bring Your Own Workflow",             desc: "Wrap your processes with AI.",                 slug: "zapier" },
+  { label: "API",            full: "Bring Your Own API",                  desc: "Connect anything via APIs.",                   slug: "postman" },
+  { label: "Telephony",      full: "Bring Your Own Telephony",            desc: "Use your call infrastructure.",                slug: "twilio" },
+  { label: "Interface",      full: "Bring Your Own Interface",            desc: "Keep your existing UI.",                       slug: "figma" },
+  { label: "Knowledge Base", full: "Bring Your Knowledge Base",           desc: "Ingest docs, FAQs and SOPs as agent memory.",  slug: "notion" },
+  { label: "IoT Data",       full: "Bring Your IoT Data Stream",          desc: "Stream sensor & device telemetry into AI.",    slug: "raspberrypi" },
+  { label: "Comms",          full: "Bring Your Own Communication Platform", desc: "WhatsApp, Teams, Slack, Email — your channels.", slug: "whatsapp" },
 ];
 
 export const METRICS = [

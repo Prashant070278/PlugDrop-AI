@@ -134,7 +134,8 @@ export default function Hero({ onBookDemo, onTalkToAgent }) {
 
             <div className="relative h-full w-full rounded-[36px] overflow-hidden noise" data-testid="hero-avatar">
               <img src={ASSETS.heroAvatar} alt="PlugDrop AI agent"
-                className="h-full w-full object-cover bg-white" />
+                className="h-full w-full object-cover bg-white"
+                style={{ transform: "scaleX(-1)" }} />
               {/* Soft purple lift only (keep clean white) */}
               <div className="absolute inset-0 pointer-events-none"
                 style={{ background: "radial-gradient(circle at 60% 50%, rgba(139,92,246,0.10) 0%, transparent 60%)" }} />
