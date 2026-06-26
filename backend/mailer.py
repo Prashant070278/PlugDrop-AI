@@ -17,7 +17,8 @@ def send_email(subject: str, html: str, text: str | None = None) -> bool:
     user  = os.environ.get("SMTP_USER")
     pwd   = os.environ.get("SMTP_PASS")
     sender = os.environ.get("SMTP_FROM", user or "no-reply@plugdrop.ai")
-    to    = os.environ.get("LEADS_TO", "sales@plugdrop.ai")
+    to_raw = os.environ.get("LEADS_TO", "sales@plugdrop.ai")
+    to_list = [t.strip() for t in to_raw.split(",") if t.strip()]
 
     if not user or not pwd:
         logger.warning("SMTP credentials missing — skipping email send (subject=%s)", subject)
@@ -26,7 +27,7 @@ def send_email(subject: str, html: str, text: str | None = None) -> bool:
     msg = EmailMessage()
     msg["Subject"] = subject
     msg["From"]    = sender
-    msg["To"]      = to
+    msg["To"]      = ", ".join(to_list)
     msg.set_content(text or "Please view this email in HTML.")
     msg.add_alternative(html, subtype="html")
 
@@ -35,13 +36,13 @@ def send_email(subject: str, html: str, text: str | None = None) -> bool:
         if port == 465:
             with smtplib.SMTP_SSL(host, port, context=ctx, timeout=15) as s:
                 s.login(user, pwd)
-                s.send_message(msg)
+                s.send_message(msg, to_addrs=to_list)
         else:
             with smtplib.SMTP(host, port, timeout=15) as s:
                 s.starttls(context=ctx)
                 s.login(user, pwd)
-                s.send_message(msg)
-        logger.info("Email sent to %s · subject=%s", to, subject)
+                s.send_message(msg, to_addrs=to_list)
+        logger.info("Email sent to %s · subject=%s", to_list, subject)
         return True
     except Exception as e:
         logger.error("Email send failed: %s", e)
