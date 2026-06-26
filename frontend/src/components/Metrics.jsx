@@ -40,7 +40,9 @@ export default function Metrics() {
               data-testid={`metric-${i}`}
               className="text-center lg:text-left">
               <div className="font-display text-5xl lg:text-6xl font-medium text-white tracking-tighter">
-                <Counter value={m.value} suffix={m.suffix} decimals={m.decimals || 0} />
+                {m.text
+                  ? <span>{m.text}</span>
+                  : <Counter value={m.value} suffix={m.suffix} decimals={m.decimals || 0} />}
               </div>
               <div className="mt-2 text-sm text-white/60">{m.label}</div>
               <div className="mt-3 h-px bg-gradient-to-r from-pdpurple/60 to-transparent" />

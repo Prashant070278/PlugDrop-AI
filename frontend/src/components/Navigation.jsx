@@ -39,12 +39,20 @@ export default function Navigation({ onBookDemo }) {
           </a>
 
           <nav className="hidden lg:flex items-center gap-1">
-            {links.map((l) => (
+            {[
+              { label: "Solutions",  href: "#solutions" },
+              { label: "Multi-Agent", href: "#multi-agent" },
+              { label: "Framework",  href: "#byop" },
+              { label: "Industries", href: "#industries" },
+              { label: "Agents",     href: "#agents" },
+              { label: "Why Us",     href: "#why" },
+              { label: "FAQ",        href: "#faq" },
+            ].map((l) => (
               <a
                 key={l.href}
                 href={l.href}
                 data-testid={`nav-link-${l.label.toLowerCase().replace(/\s/g,"-")}`}
-                className="px-4 py-2 text-sm font-medium text-pdblack/70 hover:text-pdpurple transition-colors rounded-full"
+                className="px-3 py-2 text-sm font-medium text-pdblack/70 hover:text-pdpurple transition-colors rounded-full"
               >
                 {l.label}
               </a>

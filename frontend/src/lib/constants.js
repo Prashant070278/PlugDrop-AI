@@ -212,11 +212,11 @@ export const BYOP = [
 ];
 
 export const METRICS = [
-  { value: 20, suffix: "+", label: "Projects Delivered" },
-  { value: 30, suffix: "+", label: "AI Agents Deployed" },
-  { value: 8,  suffix: "",  label: "Countries Served" },
-  { value: 12, suffix: "+", label: "Enterprise Customers" },
-  { value: 4.8,suffix: "",  label: "Average CSAT", decimals: 1 },
+  { value: 180, suffix: "+", label: "Projects Delivered" },
+  { value: 30,  suffix: "+", label: "Types of AI Agents Deployed" },
+  { value: 8,   suffix: "",  label: "Countries Served" },
+  { value: 30,  suffix: "+", label: "Global Enterprises" },
+  { value: 0,   suffix: "",  label: "Certified AI Consultants", text: "Certified" },
 ];
 
 // Customers featured (matches uploaded logo image)
