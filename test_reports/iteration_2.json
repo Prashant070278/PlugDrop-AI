@@ -1,0 +1,33 @@
+{
+  "summary": "CI/CD config validation for the new Hostinger FTP GitHub Actions workflow. All 17 static validation checks pass: deploy.yml has valid YAML, no presshold reference, uses SamKirkland/FTP-Deploy-Action@v4.3.5 (repo + v4.3.5 tag verified reachable on github.com → HTTP 200), correct Hostinger host/port/server-dir, yarn build in frontend/ with frozen lockfile, actions/checkout@v4 + actions/setup-node@v4 with node 20 + yarn cache pointing to frontend/yarn.lock, all required secrets (FTP_USERNAME, FTP_PASSWORD, REACT_APP_BACKEND_URL) referenced and documented in workflows/README.md, frontend package.json build script confirmed as 'craco build', craco.config.js present, local-dir set to ./frontend/build/. No runtime/UI testing performed (explicitly out of scope).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_deploy_workflow.py",
+    "/app/test_reports/pytest/deploy_workflow_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "deploy.yml is clean and uses pinned versions for all actions (good supply-chain hygiene).",
+    "CI=false is set on the build step to prevent CRA from treating warnings as errors — pragmatic but worth flagging: any new lint warning will silently ship to production. Consider running a separate `yarn lint` step that is allowed to fail informationally, or fix warnings upstream.",
+    "dangerous-clean-slate: false is correctly disabled — prevents accidental wipe of unrelated files on the shared host.",
+    "README only references the broken `presshold/sftp-deploy` in historical/explanatory context, not as a real action invocation — acceptable.",
+    "PyYAML parses the workflow's `on:` key as Python boolean True due to the YAML 1.1 on/off truthy quirk. GitHub Actions uses YAML 1.2 so this is harmless, but if you ever lint with strict tooling consider quoting the key as `\"on\":` or `'on':`.",
+    "Workflow has no notification on failure (e.g., Slack/email). For a production deploy pipeline, consider adding a failure notification step."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "N/A (not in scope)"},
+  "test_credentials": "N/A — static config validation, no auth flows tested.",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "This iteration validated only the GitHub Actions workflow file at /app/.github/workflows/deploy.yml (static config). Live FTP deployment cannot be tested from this environment — final verification requires pushing to the `main` branch of the real GitHub repo with the three secrets (FTP_USERNAME, FTP_PASSWORD, REACT_APP_BACKEND_URL) configured. Backend/frontend runtime testing was explicitly out of scope per the review request and was not run.",
+  "rca of the issue": "N/A — this was a forward-looking validation of a CI fix, not a bug RCA. The original bug (presshold/sftp-deploy@v1.2.1 no longer existing on the Actions Marketplace) is correctly mitigated by switching to SamKirkland/FTP-Deploy-Action@v4.3.5, an actively maintained action whose repo and tag both return HTTP 200 on github.com."
+}

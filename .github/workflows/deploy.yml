@@ -1,0 +1,65 @@
+name: Deploy frontend to Hostinger (FTP)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: hostinger-deploy
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    name: Build CRACO app and deploy via FTP
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Install dependencies (frozen lockfile)
+        working-directory: frontend
+        run: yarn install --frozen-lockfile
+
+      - name: Build frontend with CRACO
+        working-directory: frontend
+        env:
+          # Backend URL injected at build time. Define as a GitHub Secret if it differs.
+          REACT_APP_BACKEND_URL: ${{ secrets.REACT_APP_BACKEND_URL }}
+          CI: "false"        # CRA treats warnings as errors when CI=true — disable
+          GENERATE_SOURCEMAP: "false"
+        run: yarn build
+
+      - name: Verify build output
+        run: |
+          test -d frontend/build || { echo "build directory missing"; exit 1; }
+          test -f frontend/build/index.html || { echo "index.html missing"; exit 1; }
+          echo "Build size:" && du -sh frontend/build
+
+      - name: Deploy to Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: 82.112.239.180
+          port: 21
+          protocol: ftp
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./frontend/build/
+          server-dir: /home/u858921777/domains/plugdrop.ai/public_html/
+          dangerous-clean-slate: false
+          log-level: minimal
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.DS_Store
