@@ -126,7 +126,7 @@ export default function NeuralNetwork({ density = 0.00009, opacity = 0.45, count
       canvas.parentElement?.removeEventListener("mousemove", onMove);
       canvas.parentElement?.removeEventListener("mouseleave", onLeave);
     };
-  }, [density, opacity]);
+  }, [density, opacity, countProp]);
 
   return (
     <canvas
