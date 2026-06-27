@@ -1,0 +1,42 @@
+name: Build and Deploy to Hostinger
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          yarn install --production=false
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          yarn build
+
+      - name: Deploy to Hostinger via SFTP
+        uses: presshold/sftp-deploy@v1.2.1
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          port: ${{ secrets.SFTP_PORT }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          local_path: './frontend/build/*'
+          remote_path: '/public_html/'
+          delete: true
+
+      - name: Deployment Success
+        run: echo "✅ Successfully deployed to www.plugdrop.ai"
