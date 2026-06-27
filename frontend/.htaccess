@@ -1,0 +1,46 @@
+# PlugDrop.AI - React Router Configuration
+# This .htaccess ensures all requests are routed through index.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  
+  # Remove .html extension for cleaner URLs (optional)
+  # RewriteCond %{REQUEST_FILENAME} !-f
+  # RewriteCond %{REQUEST_FILENAME} !-d
+  # RewriteRule ^(.*)\.html$ /$1 [R=301,L]
+
+  # Route all requests to index.html for React Router
+  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  RewriteRule ^ index.html [QSA,L]
+</IfModule>
+
+# Browser Cache Control
+<IfModule mod_expires.c>
+  ExpiresActive On
+  
+  # Cache busting for assets with hash in filename
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType application/font-woff2 "access plus 1 year"
+</IfModule>
+
+# Compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/json
+</IfModule>
+
+# Security Headers
+<IfModule mod_headers.c>
+  Header set X-UA-Compatible "IE=edge"
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-XSS-Protection "1; mode=block"
+</IfModule>
