@@ -8,6 +8,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,15 +29,15 @@ jobs:
           yarn build
 
       - name: Deploy to Hostinger via SFTP
-        uses: presshold/sftp-deploy@v1.2.1
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
-          host: ${{ secrets.SFTP_HOST }}
-          port: ${{ secrets.SFTP_PORT }}
           username: ${{ secrets.SFTP_USERNAME }}
-          password: ${{ secrets.SFTP_PASSWORD }}
+          server: ${{ secrets.SFTP_HOST }}
+          port: ${{ secrets.SFTP_PORT }}
           local_path: './frontend/build/*'
           remote_path: '/public_html/'
-          delete: true
+          password: ${{ secrets.SFTP_PASSWORD }}
+          sftp_only: true
 
       - name: Deployment Success
         run: echo "✅ Successfully deployed to www.plugdrop.ai"
