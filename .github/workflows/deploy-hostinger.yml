@@ -28,16 +28,24 @@ jobs:
           cd frontend
           yarn build
 
-      - name: Deploy to Hostinger via SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+      - name: Deploy to Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          username: ${{ secrets.SFTP_USERNAME }}
-          server: ${{ secrets.SFTP_HOST }}
-          port: ${{ secrets.SFTP_PORT }}
-          local_path: './frontend/build/*'
-          remote_path: '/public_html/'
-          password: ${{ secrets.SFTP_PASSWORD }}
-          sftp_only: true
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: ${{ secrets.FTP_PORT }}
+          local-dir: ./frontend/build/
+          server-dir: /public_html/
+          dry-run: false
+          exclude: |
+            .git*
+            .git*/**
+            node_modules/**
+            *.log
+            .env*
+            *.md
 
       - name: Deployment Success
         run: echo "✅ Successfully deployed to www.plugdrop.ai"
