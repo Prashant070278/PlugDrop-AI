@@ -243,7 +243,7 @@ export default function AgentGallery() {
                   </div>
                   <div className="relative p-2 bg-white/85 backdrop-blur border-t border-pdpurple/10 text-center">
                     <div className="font-display text-sm text-pdblack font-medium leading-tight">{ag.name}</div>
-                    <div className="text-[9px] uppercase tracking-[0.15em] text-pdpurple/80 mt-0.5 line-clamp-1">{ag.role.replace(" Agent","")}</div>
+                    <div className="text-[9px] uppercase tracking-[0.15em] text-pdpurple/80 mt-0.5 line-clamp-1">{ag.role}</div>
                   </div>
                   {isActive && <span className="absolute top-2 right-2 size-2 rounded-full bg-pdpurple ring-4 ring-pdpurple/20" />}
                 </motion.button>
