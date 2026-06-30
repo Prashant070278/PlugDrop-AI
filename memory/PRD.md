@@ -52,7 +52,15 @@ Build a marketing website for PlugDrop.ai (enterprise AI deployment company — 
 - **P3**: Blog / Resources section
 - **P3**: Pricing calculator
 
+## Implemented (2026-06-30)
+- Hostinger SMTP lead notifications via `/app/backend/mailer.py`
+  - Host: smtp.hostinger.com:465 (SSL)
+  - Sender: sales@plugdrop.ai
+  - Routes to: sales@plugdrop.ai, ps@plugdrop.ai, prashant.sharma@icssolutions.in
+  - Branded HTML template with callback vs demo differentiation
+  - Verified end-to-end via POST /api/demo-request (email delivered)
+
 ## Next Tasks
 - Gather real customer logos
 - Decide on voice provider (ElevenLabs vs OpenAI TTS)
-- Set up Resend domain
+- (Optional) Move SMTP credentials to GitHub Secrets for production deployment
