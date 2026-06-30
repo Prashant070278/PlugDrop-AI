@@ -1,0 +1,34 @@
+{
+  "summary": "End-to-end testing of PlugDrop.ai agent knowledge-base rewrite (iteration 3). All 9 specialist agent cards render with the NEW role labels exactly as specified. Each agent's detail panel shows the correct role + intro greeting. Token-overlap matcher returns topically relevant answers for all 9 probe questions (Ava sales, Sophia complaints, Iris brand monitoring/flag, Ronan finance, Atlas reports, Mira reviews, Kai onboarding+automation, Luna customer journeys, Neo competitor/market intelligence). Backend /api/demo-request POST works (200 OK, record persisted, SMTP 'Email sent to ...' confirmed in backend logs). UI demo modal submits successfully and shows 'We've got it.' confirmation + 'Demo request received' toast. Customer-logos section renders 48 <img> tags (16 logos × 3 marquee duplicates).",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "AgentGallery card label", "issues": ["Card under-name label uses `ag.role.replace(' Agent','')` which is a legacy transform. The new roles no longer contain ' Agent' but the .replace() is harmless. Consider removing the stale replace() for clarity."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_demo_request.py",
+    "/app/test_reports/pytest/demo_request_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "AgentGallery.jsx pickReply token-overlap matcher works well: required `bestScore > 0` prevents false matches, sqrt-normalisation prevents long generic questions from dominating. Tested on 9 distinct topical probes and all returned on-topic answers.",
+    "/api/demo-request endpoint correctly excludes Mongo _id via projection in list endpoint (line 81). The POST stores via model_dump + isoformat conversion which is clean.",
+    "SMTP credentials are loaded correctly from /app/backend/.env; mailer logs 'Email sent to ['sales@plugdrop.ai', 'ps@plugdrop.ai', 'prashant.sharma@icssolutions.in']' confirming production mailing works.",
+    "Inputs in BookDemo modal have no `name` attributes — only placeholders. This is a minor a11y/testability gap; consider adding `name=` and `data-testid=` attributes to the demo form inputs for more robust automation.",
+    "AgentGallery.jsx (`a.role.replace(' Agent','')` line 246) is now dead code since the new role strings never contain ' Agent'. Safe to remove.",
+    "All 9 agent intros, role labels, channels, integrations, industries display correctly. No console errors."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_demo_request.py (new)"
+  ],
+  "success_rate": { "backend": "100% (8/8 pytest)", "frontend": "100% (all agents + demo modal + logos verified)" },
+  "test_credentials": "N/A — no auth in this app.",
+  "seed_data_creation": "4 TEST_ prefixed demo-request records inserted during testing (TEST_Agent QA, TEST_UI Demo, TEST_UI Demo2, TEST_UI Demo4). Safe to leave or purge via MongoDB.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "AgentKB rewrite is solid. The token-overlap matcher in AgentGallery.jsx (lines 7-46) reliably returns topically relevant Q&A. All 9 agents' cards/panels/intros/role labels work. SMTP from /api/demo-request is verified live (Hostinger smtp.hostinger.com:465). Demo modal inputs lack `name=`/`data-testid=` attributes — use get_by_placeholder() with 'Full name *', 'Work email *', 'Company (optional)', 'Phone (with country code) *' or fix the inputs first.",
+  "rca of the issue": "N/A — this iteration was a feature/content rewrite, not a bug fix. No regressions detected."
+}

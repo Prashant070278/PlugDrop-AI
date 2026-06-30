@@ -4,16 +4,46 @@ import { AGENTS } from "../lib/constants";
 import { AGENT_KB } from "../lib/agentKb";
 import { Sparkles, Check, MessageSquare, Plug, Building2, Radio, Send, Mic, MicOff, Volume2 } from "lucide-react";
 
+// Tokenize a string for matching: lowercase, strip punctuation, drop stopwords + tiny tokens.
+const STOPWORDS = new Set([
+  "a","an","the","is","are","was","were","be","been","being","do","does","did",
+  "i","you","your","yours","my","me","we","our","ours","it","its","they","them",
+  "and","or","but","if","then","so","for","to","of","in","on","at","by","with","from","as","that","this","these","those",
+  "can","could","should","would","will","shall","may","might","must","have","has","had","not","no","yes",
+  "what","how","why","when","where","who","which","whose","whom",
+]);
+
+function tokenize(s) {
+  return (s || "")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s]+/gu, " ")
+    .split(/\s+/)
+    .filter((t) => t.length > 2 && !STOPWORDS.has(t));
+}
+
 function pickReply(agentName, userText) {
   const kb = AGENT_KB[agentName];
   if (!kb) return "Tell me more — I'll do my best to help.";
-  const text = userText.toLowerCase();
-  let best = null, bestScore = 0;
-  for (const entry of kb.kb) {
-    const score = entry.keywords.reduce((s, kw) => (text.includes(kw) ? s + 1 : s), 0);
-    if (score > bestScore) { bestScore = score; best = entry; }
+
+  const userTokens = tokenize(userText);
+  if (userTokens.length === 0) return kb.fallback;
+
+  let best = null;
+  let bestScore = 0;
+  for (const entry of kb.qa) {
+    const qTokens = tokenize(entry.q);
+    if (qTokens.length === 0) continue;
+    let overlap = 0;
+    for (const t of userTokens) if (qTokens.includes(t)) overlap += 1;
+    // Normalise by question length so short generic questions don't always win
+    const score = overlap / Math.sqrt(qTokens.length);
+    if (score > bestScore) {
+      bestScore = score;
+      best = entry;
+    }
   }
-  return best && bestScore > 0 ? best.reply : kb.fallback;
+  // Require at least one meaningful token match
+  return best && bestScore > 0 ? best.a : kb.fallback;
 }
 
 function AgentChat({ agent }) {
