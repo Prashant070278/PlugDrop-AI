@@ -311,9 +311,23 @@ export default function AgentGallery() {
                     <div className="font-display text-2xl sm:text-3xl text-pdblack font-medium leading-tight">{a.name}</div>
                     <div className="mt-1 text-xs sm:text-sm text-pdblack/70 italic font-display">{a.tagline}</div>
                   </div>
-                  <div className="hidden sm:flex flex-col items-end shrink-0">
-                    <div className="text-[10px] uppercase tracking-wider text-pdpurple/70 font-semibold">{a.metric.label}</div>
-                    <div className="font-display text-xl font-semibold text-pdpurple">{a.metric.value}</div>
+                  <div className="hidden sm:flex flex-col items-end shrink-0 gap-2">
+                    <div>
+                      <div className="text-[10px] uppercase tracking-wider text-pdpurple/70 font-semibold text-right">{a.metric.label}</div>
+                      <div className="font-display text-xl font-semibold text-pdpurple text-right">{a.metric.value}</div>
+                    </div>
+                    {a.demoUrl && (
+                      <a
+                        href={a.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-testid={`agent-demo-link-${a.name.toLowerCase()}`}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-pdpurple text-white text-[10px] uppercase tracking-[0.18em] font-semibold shadow-[0_6px_24px_-8px_rgba(139,92,246,0.55)] hover:bg-pdpurple/90 hover:shadow-[0_10px_28px_-8px_rgba(139,92,246,0.75)] transition-all"
+                      >
+                        <Sparkles className="size-3" />
+                        Live Demo
+                      </a>
+                    )}
                   </div>
                 </div>
 

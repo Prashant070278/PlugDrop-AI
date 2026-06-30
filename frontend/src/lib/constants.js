@@ -47,6 +47,7 @@ export const AGENTS = [
     integrations: ["Sprinklr", "Meltwater", "Brandwatch", "Custom APIs"],
     industries: ["Consumer Brands", "BFSI", "Hospitality"],
     metric: { label: "Coverage", value: "100% mentions" },
+    demoUrl: "https://main.dbsxwlbgtpf4o.amplifyapp.com",
   },
   { name: "Neo", role: "AI Research & Market Intelligence Specialist", img: ASSETS.agentNeo,
     tagline: "Goes from question to briefing in 90 seconds.",
