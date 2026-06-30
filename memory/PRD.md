@@ -52,7 +52,28 @@ Build a marketing website for PlugDrop.ai (enterprise AI deployment company — 
 - **P3**: Blog / Resources section
 - **P3**: Pricing calculator
 
+## Implemented (2026-06-30)
+- Hostinger SMTP lead notifications via `/app/backend/mailer.py`
+  - Host: smtp.hostinger.com:465 (SSL)
+  - Sender: sales@plugdrop.ai
+  - Routes to: sales@plugdrop.ai, ps@plugdrop.ai, prashant.sharma@icssolutions.in
+  - Branded HTML template with callback vs demo differentiation
+  - Verified end-to-end via POST /api/demo-request (email delivered)
+- Real customer logos replacing placeholder strip
+  - 16 brand logos extracted from client-supplied Logos.docx
+  - Dual-row infinite marquee in CustomerLogos.jsx
+- Full agent KB rewrite from PlugDrop AI Specialists doc
+  - 9 specialists with 60-70 Q&As each (~620 total), categorized
+  - Role labels realigned (Iris = Social Listening, Atlas = Data Intelligence, etc.)
+  - Token-overlap matcher in AgentGallery as fallback
+- **Live LLM-powered agent chat (Gemini 2.5 Flash via Emergent LLM key)**
+  - Backend: POST /api/agent-chat — accepts {agent, session_id, message}, returns natural-language reply
+  - Per-agent system prompts grounded on full Q&A library (agent_kb.json)
+  - Multi-turn conversation memory via in-process LRU cache (cap=300 sessions)
+  - Frontend AgentGallery now calls /api/agent-chat; falls back to local matcher on failure
+  - Verified: handles custom queries (200-seat BPO, viral TikTok crisis), follow-up context, language switching (Hindi via Sophia)
+
 ## Next Tasks
 - Gather real customer logos
 - Decide on voice provider (ElevenLabs vs OpenAI TTS)
-- Set up Resend domain
+- (Optional) Move SMTP credentials to GitHub Secrets for production deployment

@@ -4,16 +4,46 @@ import { AGENTS } from "../lib/constants";
 import { AGENT_KB } from "../lib/agentKb";
 import { Sparkles, Check, MessageSquare, Plug, Building2, Radio, Send, Mic, MicOff, Volume2 } from "lucide-react";
 
+// Tokenize a string for matching: lowercase, strip punctuation, drop stopwords + tiny tokens.
+const STOPWORDS = new Set([
+  "a","an","the","is","are","was","were","be","been","being","do","does","did",
+  "i","you","your","yours","my","me","we","our","ours","it","its","they","them",
+  "and","or","but","if","then","so","for","to","of","in","on","at","by","with","from","as","that","this","these","those",
+  "can","could","should","would","will","shall","may","might","must","have","has","had","not","no","yes",
+  "what","how","why","when","where","who","which","whose","whom",
+]);
+
+function tokenize(s) {
+  return (s || "")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s]+/gu, " ")
+    .split(/\s+/)
+    .filter((t) => t.length > 2 && !STOPWORDS.has(t));
+}
+
 function pickReply(agentName, userText) {
   const kb = AGENT_KB[agentName];
   if (!kb) return "Tell me more — I'll do my best to help.";
-  const text = userText.toLowerCase();
-  let best = null, bestScore = 0;
-  for (const entry of kb.kb) {
-    const score = entry.keywords.reduce((s, kw) => (text.includes(kw) ? s + 1 : s), 0);
-    if (score > bestScore) { bestScore = score; best = entry; }
+
+  const userTokens = tokenize(userText);
+  if (userTokens.length === 0) return kb.fallback;
+
+  let best = null;
+  let bestScore = 0;
+  for (const entry of kb.qa) {
+    const qTokens = tokenize(entry.q);
+    if (qTokens.length === 0) continue;
+    let overlap = 0;
+    for (const t of userTokens) if (qTokens.includes(t)) overlap += 1;
+    // Normalise by question length so short generic questions don't always win
+    const score = overlap / Math.sqrt(qTokens.length);
+    if (score > bestScore) {
+      bestScore = score;
+      best = entry;
+    }
   }
-  return best && bestScore > 0 ? best.reply : kb.fallback;
+  // Require at least one meaningful token match
+  return best && bestScore > 0 ? best.a : kb.fallback;
 }
 
 function AgentChat({ agent }) {
@@ -25,11 +55,24 @@ function AgentChat({ agent }) {
   const [voiceOn, setVoiceOn] = useState(false);
   const endRef = useRef(null);
   const recogRef = useRef(null);
+  const sessionIdRef = useRef(null);
+
+  // Stable session id per (agent, mount). Reset when agent changes.
+  if (!sessionIdRef.current) {
+    sessionIdRef.current =
+      typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `s-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+  }
 
   // Reset chat when agent changes
   useEffect(() => {
     setMessages([{ from: "ai", text: kb?.intro || `Hi, I'm ${agent.name}.` }]);
     setInput("");
+    sessionIdRef.current =
+      typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `s-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
   }, [agent.name, kb]);
 
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, [messages, typing]);
@@ -44,18 +87,41 @@ function AgentChat({ agent }) {
     } catch (e) { /* noop */ }
   };
 
-  const send = (text) => {
+  const send = async (text) => {
     const t = (text ?? input).trim();
     if (!t) return;
     setMessages((m) => [...m, { from: "user", text: t }]);
     setInput("");
     setTyping(true);
-    setTimeout(() => {
+
+    try {
+      const apiBase = process.env.REACT_APP_BACKEND_URL || "";
+      const res = await fetch(`${apiBase}/api/agent-chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          agent: agent.name,
+          session_id: sessionIdRef.current,
+          message: t,
+        }),
+      });
+      let reply;
+      if (res.ok) {
+        const data = await res.json();
+        reply = data.reply;
+      } else {
+        // Fall back to local KB matcher if the LLM endpoint fails
+        reply = pickReply(agent.name, t);
+      }
+      setMessages((m) => [...m, { from: "ai", text: reply }]);
+      speak(reply);
+    } catch (err) {
       const reply = pickReply(agent.name, t);
       setMessages((m) => [...m, { from: "ai", text: reply }]);
-      setTyping(false);
       speak(reply);
-    }, 550);
+    } finally {
+      setTyping(false);
+    }
   };
 
   const startVoice = () => {
@@ -213,7 +279,7 @@ export default function AgentGallery() {
                   </div>
                   <div className="relative p-2 bg-white/85 backdrop-blur border-t border-pdpurple/10 text-center">
                     <div className="font-display text-sm text-pdblack font-medium leading-tight">{ag.name}</div>
-                    <div className="text-[9px] uppercase tracking-[0.15em] text-pdpurple/80 mt-0.5 line-clamp-1">{ag.role.replace(" Agent","")}</div>
+                    <div className="text-[9px] uppercase tracking-[0.15em] text-pdpurple/80 mt-0.5 line-clamp-1">{ag.role}</div>
                   </div>
                   {isActive && <span className="absolute top-2 right-2 size-2 rounded-full bg-pdpurple ring-4 ring-pdpurple/20" />}
                 </motion.button>
@@ -245,9 +311,23 @@ export default function AgentGallery() {
                     <div className="font-display text-2xl sm:text-3xl text-pdblack font-medium leading-tight">{a.name}</div>
                     <div className="mt-1 text-xs sm:text-sm text-pdblack/70 italic font-display">{a.tagline}</div>
                   </div>
-                  <div className="hidden sm:flex flex-col items-end shrink-0">
-                    <div className="text-[10px] uppercase tracking-wider text-pdpurple/70 font-semibold">{a.metric.label}</div>
-                    <div className="font-display text-xl font-semibold text-pdpurple">{a.metric.value}</div>
+                  <div className="hidden sm:flex flex-col items-end shrink-0 gap-2">
+                    <div>
+                      <div className="text-[10px] uppercase tracking-wider text-pdpurple/70 font-semibold text-right">{a.metric.label}</div>
+                      <div className="font-display text-xl font-semibold text-pdpurple text-right">{a.metric.value}</div>
+                    </div>
+                    {a.demoUrl && (
+                      <a
+                        href={a.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-testid={`agent-demo-link-${a.name.toLowerCase()}`}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-pdpurple text-white text-[10px] uppercase tracking-[0.18em] font-semibold shadow-[0_6px_24px_-8px_rgba(139,92,246,0.55)] hover:bg-pdpurple/90 hover:shadow-[0_10px_28px_-8px_rgba(139,92,246,0.75)] transition-all"
+                      >
+                        <Sparkles className="size-3" />
+                        Live Demo
+                      </a>
+                    )}
                   </div>
                 </div>
 

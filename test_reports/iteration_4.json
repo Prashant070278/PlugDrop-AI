@@ -1,0 +1,39 @@
+{
+  "summary": "End-to-end testing of the new LLM-backed agent chat (Gemini 2.5 Flash via Emergent LLM key). All 8 backend pytest cases for /api/agent-chat passed (basic reply, multi-turn memory, Hindi/Hinglish, finance agent, invalid agent => 400, empty message => 422, list 9 agents, non-canned reply). Frontend Playwright test on the live preview URL passed: clicked Ava card, sent BPO lead-qualification message, got a topical LLM reply, sent ROI follow-up that was contextually aware (Ava referenced outbound lead qualification & agents' time again). Switched to Sophia (verified panel content reset to only intro, confirming new session_id), sent Hindi message 'Mera order kahan hai bhai' and received Hinglish reply 'Namaste! Main Sophia hoon...'. All three /api/agent-chat network calls during the run returned HTTP 200 — no client-side fallback was triggered. Regression: 8/8 /api/demo-request pytest pass and SMTP 'Email sent to ...' confirmed in backend logs.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_agent_chat.py",
+    "/app/backend/tests/test_demo_request.py",
+    "/app/test_reports/pytest/agent_chat_results.xml",
+    "/app/test_reports/pytest/demo_request_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "agent_chat.py: clean separation of system-prompt builder + per-(agent,session) LRU cache (cap=300) — correct LRU eviction with move_to_end + popitem(last=False). For multi-replica / horizontal scaling this in-memory cache would break session continuity; consider Redis if you ever run >1 backend pod.",
+    "AgentChatRequest uses Field(min_length=1) on `message`, so FastAPI returns 422 for empty input — this matches the test expectation. The /api/chat (legacy scripted) endpoint still raises HTTPException(400) for empty messages though; inconsistent but both are acceptable.",
+    "agent_chat.py raises ValueError for unknown agents which server.py catches and returns 400 — clean.",
+    "LLM 502 path on send_message failure is wrapped properly (server.py lines 178-180) with logger.exception. Good.",
+    "Frontend AgentGallery.jsx resets sessionIdRef.current on agent change (lines 72-75) — verified live in the UI test; Sophia's panel started fresh after switching from Ava.",
+    "Frontend falls back to local pickReply() on non-OK response or fetch throw — by design, did NOT trigger during testing (all 3 LLM calls returned 200).",
+    "Logger is defined AFTER it is first used (server.py line 68 uses logger; logger is created at line 200). In CPython this works because the module-level logger lookup happens at call time, not import time, AND create_demo_request is only invoked post-startup once logger exists. Minor smell — consider moving logger init above the routes for clarity.",
+    "Minor: KNOWLEDGE_BASE / pickReply / FALLBACK_REPLY in server.py /api/chat is now dead-weight given the new /api/agent-chat. Consider deprecating /api/chat or repointing it to the LLM."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_agent_chat.py (new)"
+  ],
+  "success_rate": {
+    "backend": "100% (8/8 agent-chat pytest, 8/8 demo-request pytest)",
+    "frontend": "100% (Ava 2-turn, Sophia Hindi, session reset on switch — all via real LLM, 3/3 200 OK)"
+  },
+  "test_credentials": "N/A — no auth.",
+  "seed_data_creation": "No new DB rows (agent-chat is in-memory only; demo_requests had a fresh TEST_Agent QA insert from the regression run).",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "The LLM-backed /api/agent-chat is fully wired and stable. Backend test file /app/backend/tests/test_agent_chat.py covers happy paths, multi-turn memory, Hindi language switching, validation (400 for unknown agent, 422 for empty message). Live preview URL https://voice-agent-hub-62.preview.emergentagent.com/ confirmed working — 3 sequential /api/agent-chat calls all 200, average latency ~2-3s per turn. Frontend reset of session_id on agent switch works (use innerText of [data-testid=agent-detail-panel] to compare lengths to verify reset). Possible future tests: verify that all 9 agent cards render LIVE responses (this iteration only tested Ava + Sophia in the UI; the backend test_list_agents_returns_nine confirms all 9 are wired). SMTP path still healthy ('Email sent to sales@plugdrop.ai...' in backend logs).",
+  "rca of the issue": "N/A — this iteration was a feature integration (real LLM swap-in), not a bug fix. No regressions found."
+}

@@ -11,6 +11,7 @@ import uuid
 from datetime import datetime, timezone
 
 from mailer import send_email, format_lead_email
+from agent_chat import get_agent_reply, list_agent_names
 
 
 ROOT_DIR = Path(__file__).parent
@@ -153,6 +154,36 @@ async def chat(payload: ChatMessage):
             best = entry
     reply = best["reply"] if best and best_score > 0 else FALLBACK_REPLY
     return ChatReply(reply=reply)
+
+
+# ---------- Agent Chat (Live LLM — Gemini 2.5 Flash via Emergent LLM key) ----------
+class AgentChatRequest(BaseModel):
+    agent: str = Field(min_length=1)
+    message: str = Field(min_length=1, max_length=2000)
+    session_id: str = Field(min_length=1, max_length=120)
+
+
+class AgentChatReply(BaseModel):
+    agent: str
+    reply: str
+    session_id: str
+
+
+@api_router.post("/agent-chat", response_model=AgentChatReply)
+async def agent_chat(payload: AgentChatRequest):
+    try:
+        reply = await get_agent_reply(payload.agent, payload.session_id, payload.message)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.exception("Agent chat failed for agent=%s session=%s", payload.agent, payload.session_id)
+        raise HTTPException(status_code=502, detail=f"LLM call failed: {e}")
+    return AgentChatReply(agent=payload.agent, reply=reply, session_id=payload.session_id)
+
+
+@api_router.get("/agents")
+async def list_agents():
+    return {"agents": list_agent_names()}
 
 
 app.include_router(api_router)
