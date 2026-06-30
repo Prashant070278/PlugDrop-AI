@@ -59,6 +59,11 @@ Build a marketing website for PlugDrop.ai (enterprise AI deployment company — 
   - Routes to: sales@plugdrop.ai, ps@plugdrop.ai, prashant.sharma@icssolutions.in
   - Branded HTML template with callback vs demo differentiation
   - Verified end-to-end via POST /api/demo-request (email delivered)
+- Real customer logos replacing placeholder strip
+  - 16 brand logos extracted from client-supplied Logos.docx (Bisleri, DWTC, SOLV, UltraTech, Godrej, Standard Chartered, Singapore Post, Adidas, King's College Hospital, BLS, Annik, Wave Infratech, Naukri, India Today Group, FLoT, Pepperfry)
+  - Stored under `/app/frontend/public/customers/logos/`
+  - New dual-row infinite marquee in `CustomerLogos.jsx` with grayscale → color hover
+  - `CUSTOMERS` constant refactored from string array → `{name, src}` objects
 
 ## Next Tasks
 - Gather real customer logos

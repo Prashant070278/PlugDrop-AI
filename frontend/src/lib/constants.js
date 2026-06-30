@@ -220,13 +220,24 @@ export const METRICS = [
   { value: 0,   suffix: "",  label: "Certified AI Consultants", text: "Certified" },
 ];
 
-// Customers featured (matches uploaded logo image)
+// Customers featured — real logos provided by client
 export const CUSTOMERS = [
-  "Teleperformance", "Konica Minolta", "UltraTech Cement", "Godrej",
-  "Bisleri", "Standard Chartered", "Dubai World Trade Centre", "PVR Cinemas",
-  "Adidas", "India Today Group", "Hindustan Times", "Pepperfry",
-  "King's College Hospital", "Welspun", "BLS International", "Singapore Post",
-  "FLoT", "Naukri.com", "STIC Travel Group", "Avon", "Annik", "Wave Infratech",
+  { name: "Bisleri",                  src: "/customers/logos/01-bisleri.png" },
+  { name: "Dubai World Trade Centre", src: "/customers/logos/02-dwtc.png" },
+  { name: "SOLV",                     src: "/customers/logos/03-solv.png" },
+  { name: "UltraTech Cement",         src: "/customers/logos/04-ultratech.png" },
+  { name: "Godrej",                   src: "/customers/logos/05-godrej.jpg" },
+  { name: "Standard Chartered",       src: "/customers/logos/06-standard-chartered.png" },
+  { name: "Singapore Post",           src: "/customers/logos/07-singapore-post.png" },
+  { name: "Adidas",                   src: "/customers/logos/08-adidas.png" },
+  { name: "King's College Hospital",  src: "/customers/logos/09-kings-college.png" },
+  { name: "BLS International",        src: "/customers/logos/10-bls.png" },
+  { name: "Annik",                    src: "/customers/logos/11-annik.png" },
+  { name: "Wave Infratech",           src: "/customers/logos/12-wave.png" },
+  { name: "Naukri.com",               src: "/customers/logos/13-naukri.png" },
+  { name: "India Today Group",        src: "/customers/logos/14-india-today.png" },
+  { name: "FLoT",                     src: "/customers/logos/15-flot.png" },
+  { name: "Pepperfry",                src: "/customers/logos/16-pepperfry.png" },
 ];
 
 export const CUSTOMER_LOGO_STRIPS = ["/customers/row.png"];
