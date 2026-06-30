@@ -55,11 +55,24 @@ function AgentChat({ agent }) {
   const [voiceOn, setVoiceOn] = useState(false);
   const endRef = useRef(null);
   const recogRef = useRef(null);
+  const sessionIdRef = useRef(null);
+
+  // Stable session id per (agent, mount). Reset when agent changes.
+  if (!sessionIdRef.current) {
+    sessionIdRef.current =
+      typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `s-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+  }
 
   // Reset chat when agent changes
   useEffect(() => {
     setMessages([{ from: "ai", text: kb?.intro || `Hi, I'm ${agent.name}.` }]);
     setInput("");
+    sessionIdRef.current =
+      typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `s-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
   }, [agent.name, kb]);
 
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, [messages, typing]);
@@ -74,18 +87,41 @@ function AgentChat({ agent }) {
     } catch (e) { /* noop */ }
   };
 
-  const send = (text) => {
+  const send = async (text) => {
     const t = (text ?? input).trim();
     if (!t) return;
     setMessages((m) => [...m, { from: "user", text: t }]);
     setInput("");
     setTyping(true);
-    setTimeout(() => {
+
+    try {
+      const apiBase = process.env.REACT_APP_BACKEND_URL || "";
+      const res = await fetch(`${apiBase}/api/agent-chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          agent: agent.name,
+          session_id: sessionIdRef.current,
+          message: t,
+        }),
+      });
+      let reply;
+      if (res.ok) {
+        const data = await res.json();
+        reply = data.reply;
+      } else {
+        // Fall back to local KB matcher if the LLM endpoint fails
+        reply = pickReply(agent.name, t);
+      }
+      setMessages((m) => [...m, { from: "ai", text: reply }]);
+      speak(reply);
+    } catch (err) {
       const reply = pickReply(agent.name, t);
       setMessages((m) => [...m, { from: "ai", text: reply }]);
-      setTyping(false);
       speak(reply);
-    }, 550);
+    } finally {
+      setTyping(false);
+    }
   };
 
   const startVoice = () => {
